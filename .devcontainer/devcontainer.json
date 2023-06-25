@@ -1,0 +1,48 @@
+{
+  "name": "NestJS & PostgresSQL",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "features": {
+    "ghcr.io/devcontainers-contrib/features/nestjs-cli:2": {
+      "version": "latest"
+    }
+  },
+  "remoteUser": "root",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "redhat.vscode-yaml",
+        "ChakrounAnas.turbo-console-log",
+        "streetsidesoftware.code-spell-checker",
+        "streetsidesoftware.code-spell-checker-spanish",
+        "Tyriar.sort-lines",
+        "chrmarti.regex",
+        "Prisma.prisma",
+        "esbenp.prettier-vscode",
+        "pnp.polacode",
+        "yzhang.markdown-all-in-one",
+        "VisualStudioExptTeam.intellicode-api-usage-examples",
+        "eamodio.gitlens",
+        "GitHub.copilot",
+        "donjayamanne.githistory",
+        "mhutchie.git-graph",
+        "GrapeCity.gc-excelviewer",
+        "formulahendry.code-runner",
+        "SonarSource.sonarlint-vscode",
+        "IronGeek.vscode-env",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+        "DavidAnson.vscode-markdownlint",
+        "johnpapa.vscode-peacock",
+        "42Crunch.vscode-openapi"
+      ],
+      "settings": {
+        "cSpell.language": "en,es",
+        "peacock.remoteColor": "#215732"
+      }
+    }
+  },
+  "forwardPorts": [4000, 5432]
+}
