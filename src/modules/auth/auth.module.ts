@@ -4,6 +4,10 @@ import configuration, {
   ConfigurationToken
 } from '../../core/config/configuration';
 import { JwtModule } from '@nestjs/jwt';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
+import { UserController } from './user/user.controller';
+import { UserService } from './user/user.service';
 
 @Module({
   imports: [
@@ -20,6 +24,8 @@ import { JwtModule } from '@nestjs/jwt';
       }),
       inject: [ConfigService]
     })
-  ]
+  ],
+  controllers: [AuthController, UserController],
+  providers: [AuthService, UserService]
 })
 export class AuthModule {}
