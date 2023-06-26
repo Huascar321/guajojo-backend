@@ -1,8 +1,32 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { ConfigService } from '@nestjs/config';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+  const configService = app.get(ConfigService);
+  const port = configService.get<number>('port', 3000);
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Guajojo API')
+    .setDescription('API documentation about the project')
+    .setVersion('2.0')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('api', app, document);
+  app.use(cookieParser());
+  const frontendUrl = configService.get<string>('frontendUrl');
+  if (frontendUrl) {
+    app.enableCors({
+      origin: [frontendUrl],
+      credentials: true,
+      exposedHeaders: ['New-Token']
+    });
+  }
+  app.use(helmet());
+  await app.listen(port);
 }
 bootstrap();
