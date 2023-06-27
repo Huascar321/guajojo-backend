@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 generator shared {
@@ -16,6 +17,7 @@ generator nestjsDto {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["profile", "knowledge"]
 }
 
 model User {
@@ -25,6 +27,8 @@ model User {
   creationDate DateTime @default(now()) @ignore @db.Timestamptz()
   updateDate   DateTime @updatedAt @ignore @db.Timestamptz()
   person       Person?
+
+  @@schema("profile")
 }
 
 model Person {
@@ -36,6 +40,8 @@ model Person {
   jobPosition   JobPosition   @relation(fields: [jobPositionId], references: [jobPositionId])
   jobPositionId Int
   conversation  Conversation?
+
+  @@schema("profile")
 }
 
 model JobPosition {
@@ -44,12 +50,16 @@ model JobPosition {
   persons       Person[]
   department    Department @relation(fields: [departmentId], references: [departmentId])
   departmentId  Int
+
+  @@schema("profile")
 }
 
 model Department {
   departmentId Int           @id @default(autoincrement())
   name         String
   jobPositions JobPosition[]
+
+  @@schema("profile")
 }
 
 model Conversation {
@@ -57,6 +67,8 @@ model Conversation {
   person         Person    @relation(fields: [personId], references: [personId])
   personId       Int       @unique
   messages       Message[]
+
+  @@schema("profile")
 }
 
 model Message {
@@ -70,6 +82,8 @@ model Message {
   conversation   Conversation @relation(fields: [conversationId], references: [conversationId])
   conversationId Int
   fallback       Fallback?
+
+  @@schema("profile")
 }
 
 model Fallback {
@@ -77,9 +91,51 @@ model Fallback {
   reviewed   Boolean
   message    Message @relation(fields: [messageId], references: [messageId])
   messageId  Int     @unique
+
+  @@schema("profile")
 }
 
 enum Role {
   USER
   BOT
+
+  @@schema("profile")
+}
+
+model Intent {
+  intentId Int    @id @default(autoincrement())
+  name     String
+
+  @@schema("knowledge")
+}
+
+model Entity {
+  entityId Int     @id @default(autoincrement())
+  name     String
+  color    String
+  memory   Boolean
+
+  @@schema("knowledge")
+}
+
+model Response {
+  responseId Int    @id @default(autoincrement())
+  name       String
+  content    String
+
+  @@schema("knowledge")
+}
+
+model Story {
+  storyId Int    @id @default(autoincrement())
+  name    String
+
+  @@schema("knowledge")
+}
+
+model Document {
+  documentId Int    @id @default(autoincrement())
+  name       String
+
+  @@schema("knowledge")
 }
