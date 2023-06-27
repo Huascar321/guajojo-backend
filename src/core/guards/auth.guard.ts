@@ -29,7 +29,7 @@ export class AuthGuard implements CanActivate {
     private reflector: Reflector
   ) {
     this.jwtSecret =
-      this.configService.get<string>(ConfigurationToken.JwtSecret) || 'secret';
+      this.configService.get<string>(ConfigurationToken.JwtSecret) ?? 'secret';
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -37,7 +37,7 @@ export class AuthGuard implements CanActivate {
     const response = context.switchToHttp().getResponse();
     const request = context.switchToHttp().getRequest();
     const accessToken =
-      extractAccessTokenFromHeader(request) || 'Token not found';
+      extractAccessTokenFromHeader(request) ?? 'Token not found';
     const refreshToken = extractRefreshTokenFromCookie(request);
     if (!refreshToken) throw new UnauthorizedException();
 

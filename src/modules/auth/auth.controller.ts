@@ -12,12 +12,13 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { User } from '@prisma/client';
-import { Jwt } from '../../shared/models/auth/jwt.model';
 import { Observable } from 'rxjs';
 import { Response, Request } from 'express';
 import { Public } from '../../core/decorators/public.decorator';
 import { extractRefreshTokenFromCookie } from '../../shared/helpers/extractor.helper';
+import { Jwt } from '../../shared/models/auth/jwt.model';
 import { UserProfile } from '../../shared/models/user/user-profile.model';
+import { CreateUserDto } from '../../shared/models/gen';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -28,7 +29,7 @@ export class AuthController {
   @Public()
   @Post('login')
   signIn(
-    @Body() signInDto: Omit<User, 'userId'>,
+    @Body() signInDto: CreateUserDto,
     @Res({ passthrough: true }) res: Response
   ): Observable<Omit<Jwt, 'refresh_token'>> {
     return this.authService.signIn(signInDto.username, signInDto.password, res);
@@ -46,9 +47,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Public()
   @Post('register')
-  signUp(
-    @Body() signUpDto: Omit<User, 'userId'>
-  ): Observable<Omit<User, 'password'>> {
+  signUp(@Body() signUpDto: CreateUserDto): Observable<Omit<User, 'password'>> {
     return this.authService.signUp(signUpDto.username, signUpDto.password);
   }
 

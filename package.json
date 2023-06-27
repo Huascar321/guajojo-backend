@@ -63,6 +63,7 @@
     "lint-staged": "^13.2.2",
     "prettier": "^2.8.8",
     "prisma": "^4.16.1",
+    "prisma-generator-nestjs": "^1.14.5",
     "source-map-support": "^0.5.21",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.0",
