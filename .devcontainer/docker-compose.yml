@@ -8,6 +8,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ..:/workspaces/guajojo-backend:cached
+      - ../../shared-types:/workspaces/shared-types
     environment:
       DATABASE_URL: postgresql://huascar321:passw0rd@localhost:5432/guajojodb?schema=public
       NODE_ENV: DEVELOPMENT

@@ -2,9 +2,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator shared {
+  provider = "prisma-client-js"
+  output   = "../../shared-types"
+}
+
 generator nestjsDto {
   provider = "prisma-generator-nestjs"
-  output = "../src/shared/models/gen/dto"
+  output   = "../src/shared/models/gen/dto"
   prettier = "true"
 }
 
@@ -19,4 +24,29 @@ model User {
   password     String
   creationDate DateTime @default(now()) @ignore @db.Timestamptz()
   updateDate   DateTime @updatedAt @ignore @db.Timestamptz()
+  Person       Person?
+}
+
+model Person {
+  personId      Int         @id @default(autoincrement())
+  fullname      String
+  email         String
+  user          User        @relation(fields: [userId], references: [userId])
+  userId        Int         @unique
+  jobPosition   JobPosition @relation(fields: [jobPositionId], references: [jobPositionId])
+  jobPositionId Int
+}
+
+model JobPosition {
+  jobPositionId Int        @id @default(autoincrement())
+  name          String
+  Persons       Person[]
+  department    department @relation(fields: [departmentId], references: [departmentId])
+  departmentId  Int
+}
+
+model department {
+  departmentId Int           @id @default(autoincrement())
+  name         String
+  jobPositions JobPosition[]
 }

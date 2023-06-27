@@ -27,12 +27,31 @@ async function registerNewUser(
   password: string
 ): Promise<void> {
   const hashedPassword = await bcrypt.hash(password, 10);
-  await lastValueFrom(
+  const createdUser = await lastValueFrom(
     userService.create({
       username,
       password: hashedPassword
     })
   );
+  const createdDepartment = await prisma.department.create({
+    data: {
+      name: 'Innovación y tecnología'
+    }
+  });
+  const createdJobPosition = await prisma.jobPosition.create({
+    data: {
+      departmentId: createdDepartment.departmentId,
+      name: 'Ingeniero de Software'
+    }
+  });
+  await prisma.person.create({
+    data: {
+      userId: createdUser.userId,
+      jobPositionId: createdJobPosition.jobPositionId,
+      fullname: 'Huáscar Suárez Chávez',
+      email: 'oxhuascar321@outlook.com'
+    }
+  });
 }
 
 main()
