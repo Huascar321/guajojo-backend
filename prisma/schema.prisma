@@ -24,23 +24,24 @@ model User {
   password     String
   creationDate DateTime @default(now()) @ignore @db.Timestamptz()
   updateDate   DateTime @updatedAt @ignore @db.Timestamptz()
-  Person       Person?
+  person       Person?
 }
 
 model Person {
-  personId      Int         @id @default(autoincrement())
+  personId      Int           @id @default(autoincrement())
   fullname      String
   email         String
-  user          User        @relation(fields: [userId], references: [userId])
-  userId        Int         @unique
-  jobPosition   JobPosition @relation(fields: [jobPositionId], references: [jobPositionId])
+  user          User          @relation(fields: [userId], references: [userId])
+  userId        Int           @unique
+  jobPosition   JobPosition   @relation(fields: [jobPositionId], references: [jobPositionId])
   jobPositionId Int
+  conversation  Conversation?
 }
 
 model JobPosition {
   jobPositionId Int        @id @default(autoincrement())
   name          String
-  Persons       Person[]
+  persons       Person[]
   department    Department @relation(fields: [departmentId], references: [departmentId])
   departmentId  Int
 }
@@ -49,4 +50,36 @@ model Department {
   departmentId Int           @id @default(autoincrement())
   name         String
   jobPositions JobPosition[]
+}
+
+model Conversation {
+  conversationId Int       @id @default(autoincrement())
+  person         Person    @relation(fields: [personId], references: [personId])
+  personId       Int       @unique
+  messages       Message[]
+}
+
+model Message {
+  messageId      Int          @id @default(autoincrement())
+  role           Role
+  text           String
+  intent         String
+  entities       Json
+  timestamp      String
+  payload        Json
+  conversation   Conversation @relation(fields: [conversationId], references: [conversationId])
+  conversationId Int
+  fallback       Fallback?
+}
+
+model Fallback {
+  fallbackId Int     @id @default(autoincrement())
+  reviewed   Boolean
+  message    Message @relation(fields: [messageId], references: [messageId])
+  messageId  Int     @unique
+}
+
+enum Role {
+  USER
+  BOT
 }

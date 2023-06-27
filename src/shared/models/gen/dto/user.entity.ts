@@ -12,6 +12,6 @@ export class UserRel {
   @Type(() => Person)
   @ValidateNested()
   @IsOptional()
-  Person: Person | null;
+  person: Person | null;
 }
 export class UserFull extends IntersectionType(User, UserRel) {}

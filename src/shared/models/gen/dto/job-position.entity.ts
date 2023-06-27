@@ -12,7 +12,7 @@ export class JobPosition {
 export class JobPositionRel {
   @Type(() => Person)
   @ValidateNested()
-  Persons: Person[];
+  persons: Person[];
   @Type(() => Department)
   @ValidateNested()
   department: Department;
