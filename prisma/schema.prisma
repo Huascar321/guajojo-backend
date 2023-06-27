@@ -41,11 +41,11 @@ model JobPosition {
   jobPositionId Int        @id @default(autoincrement())
   name          String
   Persons       Person[]
-  department    department @relation(fields: [departmentId], references: [departmentId])
+  department    Department @relation(fields: [departmentId], references: [departmentId])
   departmentId  Int
 }
 
-model department {
+model Department {
   departmentId Int           @id @default(autoincrement())
   name         String
   jobPositions JobPosition[]
