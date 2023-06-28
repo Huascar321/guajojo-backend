@@ -19,6 +19,8 @@
     "titleBar.inactiveForeground": "#e7e7e799"
   },
   "cSpell.words": [
+    "dynamicprioritypolling",
+    "fixedpollinginterval",
     "fullname"
   ]
 }

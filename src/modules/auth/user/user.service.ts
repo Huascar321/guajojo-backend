@@ -8,12 +8,10 @@ import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 export class UserService {
   constructor(private db: PrismaService) {}
 
-  findOne(
-    whereUniqueInput: Prisma.UserWhereUniqueInput
-  ): Observable<User | null> {
+  findOne(whereInput: Prisma.UserWhereUniqueInput): Observable<User | null> {
     return fromPromise(
       this.db.user.findUnique({
-        where: whereUniqueInput
+        where: whereInput
       })
     );
   }

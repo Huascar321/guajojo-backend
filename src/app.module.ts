@@ -8,6 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthModule } from './modules/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './core/guards/auth.guard';
+import { KnowledgeModule } from './modules/knowledge/knowledge.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { AuthGuard } from './core/guards/auth.guard';
       inject: [ConfigService]
     }),
     CoreModule,
-    AuthModule
+    AuthModule,
+    KnowledgeModule
   ],
   controllers: [AppController],
   providers: [
