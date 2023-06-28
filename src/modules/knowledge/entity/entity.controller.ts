@@ -11,30 +11,30 @@ import {
   Put
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import {
-  ConnectIntentDto,
-  CreateIntentDto,
-  Intent
-} from '../../../shared/models/gen';
-import { IntentService } from './intent.service';
-import { Observable } from 'rxjs';
 import { BaseController } from '../../../shared/models/base-controller.model';
+import {
+  ConnectEntityDto,
+  CreateEntityDto,
+  Entity
+} from '../../../shared/models/gen';
+import { EntityService } from './entity.service';
+import { Observable } from 'rxjs';
 
 @ApiBearerAuth()
-@ApiTags('intents')
-@Controller('intents')
-export class IntentController
-  implements BaseController<Intent, ConnectIntentDto, CreateIntentDto>
+@ApiTags('entities')
+@Controller('entities')
+export class EntityController
+  implements BaseController<Entity, ConnectEntityDto, CreateEntityDto>
 {
-  constructor(private service: IntentService) {}
+  constructor(private service: EntityService) {}
 
-  @ApiOkResponse({ type: [Intent] })
+  @ApiOkResponse({ type: [Entity] })
   @Get()
-  findAll(): Observable<Intent[]> {
+  findAll(): Observable<Entity[]> {
     return this.service.findAll();
   }
 
-  @ApiOkResponse({ type: Intent })
+  @ApiOkResponse({ type: Entity })
   @Get(':id')
   findOne(
     @Param(
@@ -42,19 +42,19 @@ export class IntentController
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })
     )
     id: number
-  ): Observable<Intent | null> {
+  ): Observable<Entity | null> {
     return this.service.findOne({
-      intentId: id
+      entityId: id
     });
   }
 
-  @ApiOkResponse({ type: Intent })
+  @ApiOkResponse({ type: Entity })
   @Post()
-  create(@Body() data: CreateIntentDto): Observable<Intent> {
+  create(@Body() data: CreateEntityDto): Observable<Entity> {
     return this.service.create(data);
   }
 
-  @ApiOkResponse({ type: Intent })
+  @ApiOkResponse({ type: Entity })
   @Put(':id')
   update(
     @Param(
@@ -62,14 +62,14 @@ export class IntentController
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })
     )
     id: number,
-    @Body() data: CreateIntentDto
-  ): Observable<Intent> {
-    return this.service.update({ intentId: id }, data);
+    @Body() data: CreateEntityDto
+  ): Observable<Entity> {
+    return this.service.update({ entityId: id }, data);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   delete(id: number): Observable<null> {
-    return this.service.delete({ intentId: id });
+    return this.service.delete({ entityId: id });
   }
 }
